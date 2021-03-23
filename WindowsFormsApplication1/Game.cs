@@ -32,7 +32,7 @@ namespace Game
 
         static MainGame() 
         {
-            CellEdge = 12;
+            CellEdge = 48;
             CellSize = new SizeF(CellEdge, CellEdge);
         }
 

@@ -9,9 +9,9 @@
 # Build results
 
 [Dd]ebug/
-#[Rr]elease/
+[Rr]elease/
 x64/
-# [Bb]in/
+[Bb]in/
 [Oo]bj/
 
 # MSTest test Results
