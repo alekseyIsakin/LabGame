@@ -13,15 +13,18 @@ namespace Game.Actors.Static
     /// </summary>
 	class Wall : AbstrUnit, IDrawable, ISolid
 	{
-        public AbstrShape Shape { get; private set; }
-        public AbstrSprite Sprite {get; private set;}
+        public AbstrShape Shape { get; protected set; }
+        public AbstrSprite Sprite {get; protected set;}
 
-        public Wall(System.Drawing.PointF pos)
+        public Wall(System.Drawing.PointF pos, System.Drawing.Bitmap img = null)
         {
             this.Pos = pos;
-            this.Sprite = new ImageSprite(Properties.Resources.wall, Game.HelpingClass.PointOp.Mul( MainGame.CellSize, 1.05f));
+            this.Sprite = new ImageSprite(
+                img ?? Properties.Resources.wall, 
+                Game.HelpingClass.PointOp.Mul(MainGame.CellSize, 1.05f));
             this.Shape = new SquareShape();
         }
+
         public void Draw(System.Drawing.Graphics gr)
         { Sprite.Draw(gr, this.Pos); }
         public void Draw(System.Drawing.Graphics gr, System.Drawing.PointF pos, System.Drawing.SizeF sz)

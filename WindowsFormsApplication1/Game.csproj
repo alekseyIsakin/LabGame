@@ -94,6 +94,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Game.cs" />
+    <Compile Include="HelpingClass\Factory.cs" />
     <Compile Include="HelpingClass\InformDraw.cs" />
     <Compile Include="HelpingClass\CollideDetecter.cs" />
     <Compile Include="HelpingClass\PointOperation.cs" />

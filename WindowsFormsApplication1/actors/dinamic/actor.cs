@@ -6,7 +6,7 @@ using System.Drawing;
 
 using Game.HelpingClass;
 
-namespace Game.Actors.dinamic
+namespace Game.Actors.Dinamic
 {
     public delegate void EventAreaELHandler(object sender, AreaEnterEventArgs e);
     public class AreaEnterEventArgs : EventArgs{}
@@ -40,11 +40,8 @@ namespace Game.Actors.dinamic
             Sprite = new SquareSprite(default(SizeF));
             Direction = new PointF(0,0);
 
-            Speed = 2;
+            Speed = 0.12f;
         }
-
-        public bool TestCollide(ISolid shape)
-        { return false; }
 
         public void Move() 
         { Move(Direction); }

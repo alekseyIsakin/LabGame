@@ -6,7 +6,7 @@ using System.Drawing;
 
 using Game.Actors;
 using Game.HelpingClass;
-using Game.Actors.dinamic;
+using Game.Actors.Dinamic;
 using Game.Actors.Static;
 
 namespace Game
@@ -182,6 +182,7 @@ namespace Game
                 {
                     string cell = bmp.GetPixel(x, y).Name;
                     AbstrUnit new_unit = new EmptyUnit();
+                    PointF CellPos = new PointF(x,y);
 
                     if (x == 0 && y == 0)
                     { cell = bmp.GetPixel(0, 1).Name; }
@@ -189,34 +190,22 @@ namespace Game
                     switch (cell)
                     {
                         case "ff000000":
-                            new_unit = new Wall(new PointF(x, y));
+                            new_unit = Factory.GetWall(CellPos);
                             break;
-                        case  "ffff0000":
-                            StartPos = new PointF(x, y);
+                        case "ffff0000":
+                            StartPos = CellPos;
                             break;
                         case "ff00ff00":
-                            new_unit = new Area(
-                                new PointF(x, y),
-                                Areas.Exit, Properties.Resources.exit,
-                                scaleArea: 0.2f);
+                            new_unit = Factory.GetExitArea(CellPos);
                             break;
                         case "ffffff00":
-                            new_unit = new Area(
-                                new PointF(x, y),
-                                Areas.Coin, Properties.Resources.coin,
-                                scaleArea: 0.5f, scaleSprite: 0.5f);
-                        break;
-                        case "ff0000ff":
-                            new_unit = new Decal(
-                                new PointF(x, y),
-                                Properties.Resources.decal1);
+                            new_unit = Factory.GetCoin(CellPos);
                             break;
-
+                        case "ff0000ff":
+                            new_unit = Factory.GetDecal(CellPos);
+                            break;
                         case "ffff00ff":
-                            new_unit = new Area(
-                                new PointF(x, y),
-                                Areas.Dmg, Properties.Resources.dmg,
-                                scaleArea: 0.75f);
+                            new_unit = Factory.GetDmgArea(CellPos);
                             break;
                     }
                     if (!(new_unit is EmptyUnit))
