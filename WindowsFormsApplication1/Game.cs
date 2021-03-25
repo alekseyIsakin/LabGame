@@ -85,9 +85,9 @@ namespace Game
                     bool move = true;
                     foreach (var obj in Units)
                     {
-                        if (obj is ISolid && !(obj == unit))
+                        if (obj is ISolid && unit is ISolid && !(obj == unit))
                         {
-                            if (unit is ISolid && obj is Area)
+                            if (obj is Area && unit is Actor)
                             {
                                 if (CollideDetect.TestCollide((unit as ISolid), obj as ISolid))
                                 {
@@ -110,7 +110,6 @@ namespace Game
                                             Inform.ClearScore();
                                             Inform.AddSolidScore(-1);
                                             GameStop();
-                                            //string s = Inform.GetString();
                                             break;
                                     }
                                 }
@@ -118,11 +117,13 @@ namespace Game
 
                             else
                                 if (CollideDetect.TestMoveCollide((unit as IMovable), obj as ISolid))
-                                { move = false; }
+                                { move = false; break; }
                         }
                     }
                     if (move)
                         (unit as IMovable).Move();
+                    if (!move && unit is EVR)
+                        (unit as EVR).ChangeDir();
                 }
             }
 
@@ -199,7 +200,7 @@ namespace Game
                             new_unit = Factory.GetExitArea(CellPos);
                             break;
                         case "ffffff00":
-                            new_unit = Factory.GetCoin(CellPos);
+                            new_unit = Factory.GetBaseEnemy(CellPos);
                             break;
                         case "ff0000ff":
                             new_unit = Factory.GetDecal(CellPos);

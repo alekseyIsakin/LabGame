@@ -37,7 +37,7 @@ namespace Game.Actors.Dinamic
         {
             Pos = new PointF();
             Shape = new SquareShape(0.6f);
-            Sprite = new SquareSprite(default(SizeF));
+            Sprite = new SquareSprite(MainGame.CellSize);
             Direction = new PointF(0,0);
 
             Speed = 0.12f;

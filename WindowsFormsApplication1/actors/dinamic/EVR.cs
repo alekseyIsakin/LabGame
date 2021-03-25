@@ -15,10 +15,12 @@ namespace Game.Actors
 
         public AbstrShape Shape { get; private set; }
         public float Speed { get; private set; }
-
+        
         public PointF Direction { get; private set; }
 
         public AbstrSprite Sprite { get; private set; }
+
+        private Game.Actors.Static.Area area;
 
         public void Set_Direction(PointF d)
         { Direction = d; }
@@ -32,19 +34,20 @@ namespace Game.Actors
         public void Set_Shape(AbstrShape sp)
         { Shape = sp; }
 
-        public EVR() 
+        public EVR(PointF pos, Game.Actors.Static.Area ar, float scaleArea = 1f, float scaleSprite = 1f) 
         {
             Directs.Add(new PointF(1, 0));
             Directs.Add(new PointF(0, 1));
             Directs.Add(new PointF(-1, 0));
             Directs.Add(new PointF(0, -1));
 
-            Pos = new PointF();
-            Shape = new SquareShape(0.6f);
-            Sprite = new SquareSprite(default(SizeF));
+            this.Pos = pos;
+            Shape = new SquareShape(scaleArea);
+            area = ar;
+            Sprite = new SquareSprite(PointOp.Mul(MainGame.CellSize, scaleArea), Brushes.Brown);
             Direction = new PointF(1,0);
 
-            Speed = 0.01f;
+            Speed = 0.05f;
         }
 
         public void Move() 
@@ -63,7 +66,7 @@ namespace Game.Actors
         public void ChangeDir()
         {
             curdir += 1;
-            curdir = curdir % 4;
+            curdir = curdir % Directs.Count;
             Direction = Directs[curdir];
         }
 

@@ -12,11 +12,19 @@ namespace Game.HelpingClass
 {
     static class Factory
     {
+        public static List<AbstrUnit> Units {get; private set;}
         public static Wall GetWall(PointF pos, Bitmap img = null) 
         {
             return new Wall(
                 pos,
                 img ?? Properties.Resources.wall);
+        }
+        public static EVR GetBaseEnemy(PointF pos, Bitmap img = null)
+        {
+            return new EVR(
+                pos,
+                GetDmgArea(pos),
+                scaleArea: 0.8f, scaleSprite: 1f);
         }
         public static Area GetCoin(PointF pos, Bitmap img = null) 
         {
@@ -33,13 +41,13 @@ namespace Game.HelpingClass
                 img ?? Properties.Resources.exit,
                 scaleArea: 0.2f);
         }
-        public static Area GetDmgArea(PointF pos, Bitmap img = null) 
+        public static Area GetDmgArea(PointF pos, Bitmap img = null, float scaleArea=0.75f) 
         {
             return new Area(
                 pos,
                 Areas.Dmg, 
                 img ?? Properties.Resources.dmg,
-                scaleArea: 0.75f);
+                scaleArea: scaleArea);
         }
         public static Decal GetDecal(PointF pos, Bitmap img = null) 
         {

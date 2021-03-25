@@ -13,10 +13,7 @@ namespace Game.HelpingClass
 
         public AbstrSprite(SizeF sz) 
         {
-            if (sz == default(SizeF))
-                this.Size = MainGame.CellSize;
-            else
-                this.Size = sz;
+            this.Size = sz;
         }
 
         public abstract void Draw(Graphics gr, PointF pos);
