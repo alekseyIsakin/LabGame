@@ -20,7 +20,7 @@ namespace Game.Actors
 
         public AbstrSprite Sprite { get; private set; }
 
-        private Game.Actors.Static.Area area;
+        public Game.Actors.Static.Area area { get; private set; }
 
         public void Set_Direction(PointF d)
         { Direction = d; }
@@ -44,10 +44,10 @@ namespace Game.Actors
             this.Pos = pos;
             Shape = new SquareShape(scaleArea);
             area = ar;
-            Sprite = new SquareSprite(PointOp.Mul(MainGame.CellSize, scaleArea), Brushes.Brown);
+            Sprite = new SquareSprite(PointOp.Mul(MainGame.CellSize, scaleSprite), Brushes.Brown);
             Direction = new PointF(1,0);
 
-            Speed = 0.05f;
+            Speed = 0.06f;
         }
 
         public void Move() 
@@ -61,6 +61,7 @@ namespace Game.Actors
             tmp_pos.Y = Pos.Y + direct.Y * Speed;
 
             Pos = tmp_pos;
+            area.Set_Pos(Pos);
         }
 
         public void ChangeDir()

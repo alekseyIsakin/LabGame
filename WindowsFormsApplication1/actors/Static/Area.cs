@@ -37,6 +37,9 @@ namespace Game.Actors.Static
                 Sprite = new ImageSprite(sprite, PointOp.Mul(MainGame.CellSize, scaleSprite));
         }
 
+        public void SetSprite(AbstrSprite sprite) 
+        { this.Sprite = sprite; }
+
         public void Draw(Graphics gr)
         {
             checkDispose();
@@ -45,7 +48,7 @@ namespace Game.Actors.Static
         public void Draw(Graphics gr, PointF pos, SizeF sz)
         {
             checkDispose();
-            Sprite.Draw(gr, pos); 
+            if (Sprite != null) Sprite.Draw(gr, pos); 
         }
         public void Dispose() 
         {

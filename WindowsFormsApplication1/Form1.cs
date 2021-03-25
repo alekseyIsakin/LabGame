@@ -46,7 +46,6 @@ namespace Game
                 bmp.Dispose();
                 bmp = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             }
-            try
             {
                 gr = Graphics.FromImage(bmp);
 
@@ -54,8 +53,6 @@ namespace Game
 
                 e.Graphics.DrawImage(bmp, 0, 0);
             }
-            catch (Exception ex)
-            { MessageBox.Show(ex.Message); }
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)

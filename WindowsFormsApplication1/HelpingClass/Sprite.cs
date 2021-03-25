@@ -64,17 +64,22 @@ namespace Game.HelpingClass
     /// </summary>
     public class SquareSprite : AbstrSprite
     {
-        Brush brush;
-        public SquareSprite(SizeF size, Brush brush = null)
+        Brush Brush;
+        bool Fill;
+        public SquareSprite(SizeF size, Brush brush = null, bool fill=true)
             : base(size)
         {
-            this.brush = brush ?? Brushes.Yellow;
+            this.Brush = brush ?? Brushes.Yellow;
+            this.Fill = fill;
         }
 
         public override void Draw(Graphics gr, PointF pos)
         {
             checkDispose();
-            gr.FillRectangle(brush, pos.X - Size.Width / 2, pos.Y - Size.Height / 2, Size.Width, Size.Height);
+            if (Fill)
+                gr.FillRectangle(Brush, pos.X - Size.Width / 2, pos.Y - Size.Height / 2, Size.Width, Size.Height);
+            else
+                gr.DrawRectangle(Pens.Red, pos.X - Size.Width / 2, pos.Y - Size.Height / 2, Size.Width, Size.Height);
 #if DEBUG
             gr.DrawEllipse(Pens.Red, pos.X, pos.Y, 1, 1);
 #endif

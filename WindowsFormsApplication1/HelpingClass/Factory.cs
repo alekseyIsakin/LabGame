@@ -12,19 +12,64 @@ namespace Game.HelpingClass
 {
     static class Factory
     {
+        enum GameUnits 
+        {
+            WALL,
+            BASE_ENEMY,
+            COIN,
+            EXIT,
+            DMG,
+            DECAL
+        }
+
+        static Factory() 
+        {
+            Units = new List<AbstrUnit>();
+        }
+        
         public static List<AbstrUnit> Units {get; private set;}
+
+        public static void RegistrNewUnit(AbstrUnit unit)
+        { 
+            if (unit != null)
+            { Units.Add(unit); }
+        }
+
+        public static void SetWall(PointF pos, Bitmap img = null)
+        { Units.Add(GetWall(pos, img)); }
+
+        public static void SetBaseEnemy(PointF pos)
+        { 
+            EVR enemy = GetBaseEnemy(pos);
+            enemy.area.SetSprite(new SquareSprite(MainGame.CellSize,fill:false));
+            Units.Add(enemy);
+            Units.Add(enemy.area);
+        }
+
+        public static void SetCoin(PointF pos, Bitmap img = null)
+        { Units.Add(GetCoin(pos,img)); }
+
+        public static void SetExitArea(PointF pos, Bitmap img = null)
+        { Units.Add(GetExitArea(pos, img)); }
+
+        public static void SetDmgArea(PointF pos, Bitmap img = null, float scaleArea = 0.75f)
+        { Units.Add(GetDmgArea(pos, img, scaleArea)); }
+
+        public static void SetDecal(PointF pos, Bitmap img = null)
+        { Units.Add(GetDecal(pos, img)); }
+
         public static Wall GetWall(PointF pos, Bitmap img = null) 
         {
             return new Wall(
                 pos,
                 img ?? Properties.Resources.wall);
         }
-        public static EVR GetBaseEnemy(PointF pos, Bitmap img = null)
+        public static EVR GetBaseEnemy(PointF pos)
         {
             return new EVR(
                 pos,
                 GetDmgArea(pos),
-                scaleArea: 0.8f, scaleSprite: 1f);
+                scaleArea: 0.9f, scaleSprite: 0.9f);
         }
         public static Area GetCoin(PointF pos, Bitmap img = null) 
         {
@@ -41,7 +86,7 @@ namespace Game.HelpingClass
                 img ?? Properties.Resources.exit,
                 scaleArea: 0.2f);
         }
-        public static Area GetDmgArea(PointF pos, Bitmap img = null, float scaleArea=0.75f) 
+        public static Area GetDmgArea(PointF pos, Bitmap img = null, float scaleArea=1f) 
         {
             return new Area(
                 pos,

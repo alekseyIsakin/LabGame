@@ -40,8 +40,8 @@ namespace Game.HelpingClass
 
             if (obj is AbstrUnit)
             {
-                obj.Sprite.Draw(gr,
-                    PointOp.Mul(pointDraw, MainGame.CellEdge));
+                obj.Draw(gr,
+                    PointOp.Mul(pointDraw, MainGame.CellEdge), MainGame.CellSize);
             }
             else 
             { obj.Draw(gr); }

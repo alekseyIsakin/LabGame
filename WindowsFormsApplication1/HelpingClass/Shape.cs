@@ -29,7 +29,7 @@ namespace Game.HelpingClass
 
         override public CollideZone GetCollideZone()
         {
-            return new CollideZone { R = 0.5f};
+            return new CollideZone { R = 2f};
         }
     }
 }

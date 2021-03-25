@@ -59,7 +59,7 @@ namespace Game
         /// </summary>
         public void GameReset() 
         {
-            Units.Clear();
+            Factory.Units.Clear();
 
             Inform = new InformDraw();
 
@@ -74,16 +74,15 @@ namespace Game
             List<AbstrUnit> ToRemoveList = new List<AbstrUnit>();
             Inform.Step();
 
-            for (int i = 0; i < Units.Count; i++)
+            foreach (var unit in Factory.Units)
             {
-                var unit = Units[i];
                 if (!GameIdle)
                 { break; }
 
                 if (unit is IMovable)
                 {
                     bool move = true;
-                    foreach (var obj in Units)
+                    foreach (var obj in Factory.Units)
                     {
                         if (obj is ISolid && unit is ISolid && !(obj == unit))
                         {
@@ -107,8 +106,8 @@ namespace Game
                                             break;
 
                                         case Areas.Dmg:
-                                            Inform.ClearScore();
                                             Inform.AddSolidScore(-1);
+                                            Inform.ClearScore();
                                             GameStop();
                                             break;
                                     }
@@ -116,10 +115,11 @@ namespace Game
                             }
 
                             else
-                                if (CollideDetect.TestMoveCollide((unit as IMovable), obj as ISolid))
-                                { move = false; break; }
+                                if (!(obj is Area) && CollideDetect.TestMoveCollide((unit as IMovable), obj as ISolid))
+                                { move = false; }
                         }
                     }
+
                     if (move)
                         (unit as IMovable).Move();
                     if (!move && unit is EVR)
@@ -130,11 +130,11 @@ namespace Game
             if (ToRemoveList.Count > 0) 
             {
                 foreach (var obj in ToRemoveList)
-                { Units.Remove(obj); }
+                { Factory.Units.Remove(obj); }
                 ToRemoveList.Clear();
             }
 
-            if (!GameIdle && CompleteLevel) 
+            if (!GameIdle)
             {
                 if (curMap < Maps.Count)
                 {
@@ -155,7 +155,7 @@ namespace Game
             Render.SetOffset(actor.Pos);
             Render.Draw(actor, gr);
             
-            foreach (var unit in Units) 
+            foreach (var unit in Factory.Units) 
             {
                 if (unit is IDrawable && !(unit is Actor)) 
                 {
@@ -171,10 +171,7 @@ namespace Game
 
         public void LoadMap(int curMap) 
         {
-
-            if (Units.Count != 0)
-            { Units.Clear(); }
-
+            Factory.Units.Clear();
             Bitmap bmp = Maps[curMap];
 
             for (int y = 0; y < bmp.Height; y++)
@@ -182,7 +179,6 @@ namespace Game
                 for (int x = 0; x < bmp.Width; x++)
                 {
                     string cell = bmp.GetPixel(x, y).Name;
-                    AbstrUnit new_unit = new EmptyUnit();
                     PointF CellPos = new PointF(x,y);
 
                     if (x == 0 && y == 0)
@@ -191,26 +187,24 @@ namespace Game
                     switch (cell)
                     {
                         case "ff000000":
-                            new_unit = Factory.GetWall(CellPos);
+                            Factory.SetWall(CellPos);
                             break;
                         case "ffff0000":
                             StartPos = CellPos;
                             break;
                         case "ff00ff00":
-                            new_unit = Factory.GetExitArea(CellPos);
+                            Factory.SetExitArea(CellPos);
                             break;
                         case "ffffff00":
-                            new_unit = Factory.GetBaseEnemy(CellPos);
+                            Factory.SetBaseEnemy(CellPos);
                             break;
                         case "ff0000ff":
-                            new_unit = Factory.GetDecal(CellPos);
+                            Factory.SetDecal(CellPos);
                             break;
                         case "ffff00ff":
-                            new_unit = Factory.GetDmgArea(CellPos);
+                            Factory.SetDmgArea(CellPos);
                             break;
                     }
-                    if (!(new_unit is EmptyUnit))
-                        Units.Add(new_unit);
                 }
             }
             bg = bmp.GetPixel(0, 0);
@@ -223,7 +217,7 @@ namespace Game
             actor.Set_Shape(new SquareShape(0.5f));
             actor.Set_Speed(0.12f);
 
-            Units.Add(actor);
+            Factory.RegistrNewUnit(actor);
 
             GameIdle = true;
         }
