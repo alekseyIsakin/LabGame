@@ -26,6 +26,24 @@ namespace Game.HelpingClass
         {
             Units = new List<AbstrUnit>();
         }
+
+        public static IEnumerable<AbstrUnit> GetMovableUnits() 
+        {
+            foreach (var unit in Units) 
+            {
+                if (unit is IMovable)
+                    yield return unit;
+            }
+        }
+
+        public static IEnumerable<AbstrUnit> GetSolidUnits()
+        {
+            foreach (var unit in Units)
+            {
+                if (unit is ISolid)
+                    yield return unit;
+            }
+        }
         
         public static List<AbstrUnit> Units {get; private set;}
 
@@ -37,6 +55,9 @@ namespace Game.HelpingClass
 
         public static void SetWall(PointF pos, Bitmap img = null)
         { Units.Add(GetWall(pos, img)); }
+
+        public static void SetHiddenWall(PointF pos)
+        { Units.Add(GetHiddenWall(pos)); }
 
         public static void SetBaseEnemy(PointF pos)
         { 
@@ -63,6 +84,11 @@ namespace Game.HelpingClass
             return new Wall(
                 pos,
                 img ?? Properties.Resources.wall);
+        }
+
+        public static HiddenWall GetHiddenWall(PointF pos)
+        {
+            return new HiddenWall(pos);
         }
         public static EVR GetBaseEnemy(PointF pos)
         {

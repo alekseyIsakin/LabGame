@@ -15,7 +15,6 @@ namespace Game
     {
         Color bg = Color.Gray; 
         bool GameIdle = true;
-        bool CompleteLevel = false;
         readonly List<Bitmap> Maps;
         int curMap = 0;
 
@@ -74,7 +73,7 @@ namespace Game
             List<AbstrUnit> ToRemoveList = new List<AbstrUnit>();
             Inform.Step();
 
-            foreach (var unit in Factory.Units)
+            foreach (var unit in Factory.GetMovableUnits())
             {
                 if (!GameIdle)
                 { break; }
@@ -82,9 +81,9 @@ namespace Game
                 if (unit is IMovable)
                 {
                     bool move = true;
-                    foreach (var obj in Factory.Units)
+                    foreach (var obj in Factory.GetSolidUnits())
                     {
-                        if (obj is ISolid && unit is ISolid && !(obj == unit))
+                        if (unit is ISolid && !(obj == unit))
                         {
                             if (obj is Area && unit is Actor)
                             {
@@ -93,7 +92,6 @@ namespace Game
                                     switch ((obj as Area).Type)
                                     {
                                         case Areas.Exit:
-                                            CompleteLevel = true;
                                             GameStop();
                                             curMap += 1;
                                             System.Windows.Forms.MessageBox.Show("Win!!!\n" + Inform.GetString());
@@ -173,6 +171,17 @@ namespace Game
         {
             Factory.Units.Clear();
             Bitmap bmp = Maps[curMap];
+
+            for (int y = 0; y < bmp.Height; y++)
+            { 
+                Factory.SetHiddenWall(new PointF(-1, y));
+                Factory.SetHiddenWall(new PointF(bmp.Height, y));
+            }
+            for (int x = 0; x < bmp.Width; x++)
+            {
+                Factory.SetHiddenWall(new PointF(x, -1));
+                Factory.SetHiddenWall(new PointF(x, bmp.Width));
+            }
 
             for (int y = 0; y < bmp.Height; y++)
             {
