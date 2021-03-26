@@ -27,7 +27,17 @@ namespace Game.HelpingClass
         { Offset = offs; }
         public static void SetScreen(SizeF scr)
         { Screen = scr; }
-        
+        public static void DrawAll(Graphics gr)
+        {
+
+            foreach (var unit in Factory.Units.Where(u => (u is IDrawable)))
+            {
+                PointF pointDraw = PointOp.Sub(
+                    unit.Pos, Offset - Screen);
+                (unit as IDrawable).Draw(gr,
+                    PointOp.Mul(pointDraw, MainGame.CellEdge), MainGame.CellSize);
+            }
+        }
         public static void Draw(IDrawable obj, Graphics gr, bool always = false) 
         {
             PointF pointDraw = PointOp.Sub(

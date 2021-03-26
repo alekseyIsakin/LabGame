@@ -95,7 +95,7 @@ namespace Game.HelpingClass
             return new EVR(
                 pos,
                 GetDmgArea(pos),
-                scaleArea: 0.9f, scaleSprite: 0.9f);
+                scaleArea: 0.7f, scaleSprite: 0.7f);
         }
         public static Area GetCoin(PointF pos, Bitmap img = null) 
         {

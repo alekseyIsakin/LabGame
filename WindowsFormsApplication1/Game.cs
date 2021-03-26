@@ -152,14 +152,8 @@ namespace Game
 
             Render.SetOffset(actor.Pos);
             Render.Draw(actor, gr);
-            
-            foreach (var unit in Factory.Units) 
-            {
-                if (unit is IDrawable && !(unit is Actor)) 
-                {
-                    Render.Draw(unit as IDrawable, gr);
-                }
-            }
+            Render.DrawAll(gr);
+
             Inform.Draw(gr);
 #if DEBUG
             gr.DrawString(string.Format("pos: {0}, spd: {1}\n time: {2}", actor.Pos.ToString(), actor.Speed, DateTime.Now.Millisecond- tm1 ),
