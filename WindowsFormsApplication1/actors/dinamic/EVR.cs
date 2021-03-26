@@ -38,14 +38,23 @@ namespace Game.Actors
         {
             Directs.Add(new PointF(1, 0));
             Directs.Add(new PointF(0, 1));
+            Directs.Add(PointOp.Normalize(new PointF(1, 1)));
             Directs.Add(new PointF(-1, 0));
             Directs.Add(new PointF(0, -1));
+            Directs.Add(PointOp.Normalize(new PointF(-1, -1)));
+
+            Directs.Add(PointOp.Normalize(new PointF(1, 1)));
+            Directs.Add(PointOp.Normalize(new PointF(-1, 1)));
+            Directs.Add(PointOp.Normalize(new PointF(1, -1)));
+            Directs.Add(PointOp.Normalize(new PointF(-1, -1)));
+
+
 
             this.Pos = pos;
             Shape = new SquareShape(scaleArea);
             area = ar;
             Sprite = new SquareSprite(PointOp.Mul(MainGame.CellSize, scaleSprite), Brushes.Brown);
-            Direction = new PointF(1,0);
+            Direction = Directs[0];
 
             Speed = 0.06f;
         }

@@ -58,8 +58,6 @@ namespace Game
         /// </summary>
         public void GameReset() 
         {
-            Factory.Units.Clear();
-
             Inform = new InformDraw();
 
             LoadMap(curMap);
@@ -73,7 +71,7 @@ namespace Game
             List<AbstrUnit> ToRemoveList = new List<AbstrUnit>();
             Inform.Step();
 
-            foreach (var unit in Factory.GetMovableUnits())
+            foreach (var unit in Factory.Units.Where(u =>(u is IMovable)))
             {
                 if (!GameIdle)
                 { break; }
@@ -81,7 +79,7 @@ namespace Game
                 if (unit is IMovable)
                 {
                     bool move = true;
-                    foreach (var obj in Factory.GetSolidUnits())
+                    foreach (var obj in Factory.Units.Where(u => (u is ISolid)))
                     {
                         if (unit is ISolid && !(obj == unit))
                         {
@@ -151,7 +149,6 @@ namespace Game
             gr.Clear(bg);
 
             Render.SetOffset(actor.Pos);
-            Render.Draw(actor, gr);
             Render.DrawAll(gr);
 
             Inform.Draw(gr);
@@ -163,7 +160,7 @@ namespace Game
 
         public void LoadMap(int curMap) 
         {
-            Factory.Units.Clear();
+            Factory.ClearUnits();
             Bitmap bmp = Maps[curMap];
 
             for (int y = 0; y < bmp.Height; y++)
@@ -176,6 +173,9 @@ namespace Game
                 Factory.SetHiddenWall(new PointF(x, -1));
                 Factory.SetHiddenWall(new PointF(x, bmp.Width));
             }
+
+            actor = new Actor();
+            Factory.RegistrNewUnit(actor);
 
             for (int y = 0; y < bmp.Height; y++)
             {
@@ -214,13 +214,10 @@ namespace Game
 
             Inform.Set_Pos(new PointF());
 
-            actor = new Actor();
             actor.Set_Pos(StartPos);
             actor.Set_Sprite(new SquareSprite(PointOp.Mul( CellSize, 0.5f)));
             actor.Set_Shape(new SquareShape(0.5f));
             actor.Set_Speed(0.12f);
-
-            Factory.RegistrNewUnit(actor);
 
             GameIdle = true;
         }
@@ -246,7 +243,7 @@ namespace Game
 
             if (PointOp.lenght(dir) > 0)
             {
-                dir = PointOp.normalize(ref dir);
+                dir = PointOp.Normalize(ref dir);
                 actor.Set_Direction(dir);
             }
         }

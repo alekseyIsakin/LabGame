@@ -29,16 +29,12 @@ namespace Game.HelpingClass
         { Screen = scr; }
         public static void DrawAll(Graphics gr)
         {
-
-            foreach (var unit in Factory.Units.Where(u => (u is IDrawable)))
-            {
-                PointF pointDraw = PointOp.Sub(
-                    unit.Pos, Offset - Screen);
-                (unit as IDrawable).Draw(gr,
-                    PointOp.Mul(pointDraw, MainGame.CellEdge), MainGame.CellSize);
-            }
+            foreach (var unit in Factory.Units.Where(u => (u is IDrawable) && !(u is Game.Actors.Static.Area)))
+            { Draw(gr, unit as IDrawable); }
+            foreach (var unit in Factory.Units.Where(u => (u is IDrawable) && (u is Game.Actors.Static.Area)))
+            { Draw(gr, unit as IDrawable); }
         }
-        public static void Draw(IDrawable obj, Graphics gr, bool always = false) 
+        public static void Draw(Graphics gr, IDrawable obj, bool always = false) 
         {
             PointF pointDraw = PointOp.Sub(
                 (obj as AbstrUnit).Pos, Offset-Screen);

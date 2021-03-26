@@ -8,7 +8,11 @@ namespace Game.HelpingClass
 {
     public static class PointOp
     {
-        public static PointF normalize(ref PointF p1) 
+        public static PointF Normalize(PointF p1)
+        {
+            return Normalize(ref p1);
+        }
+        public static PointF Normalize(ref PointF p1) 
         {
             float len = lenght(p1);
 

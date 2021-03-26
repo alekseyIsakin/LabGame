@@ -26,25 +26,8 @@ namespace Game.HelpingClass
         {
             Units = new List<AbstrUnit>();
         }
-
-        public static IEnumerable<AbstrUnit> GetMovableUnits() 
-        {
-            foreach (var unit in Units) 
-            {
-                if (unit is IMovable)
-                    yield return unit;
-            }
-        }
-
-        public static IEnumerable<AbstrUnit> GetSolidUnits()
-        {
-            foreach (var unit in Units)
-            {
-                if (unit is ISolid)
-                    yield return unit;
-            }
-        }
-        
+        public static void ClearUnits()
+        { Units.Clear(); }
         public static List<AbstrUnit> Units {get; private set;}
 
         public static void RegistrNewUnit(AbstrUnit unit)
