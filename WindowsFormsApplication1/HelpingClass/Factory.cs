@@ -22,13 +22,14 @@ namespace Game.HelpingClass
             DECAL
         }
 
+        public static HashSet<AbstrUnit> Units { get; private set; }
+
         static Factory() 
         {
-            Units = new List<AbstrUnit>();
+            Units = new HashSet<AbstrUnit>();
         }
         public static void ClearUnits()
         { Units.Clear(); }
-        public static List<AbstrUnit> Units {get; private set;}
 
         public static void RegistrNewUnit(AbstrUnit unit)
         { 
